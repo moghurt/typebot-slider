@@ -13,7 +13,6 @@
   input[type=range] { width: 100%; margin-bottom: 20px; accent-color: #EAB308; cursor: pointer; }
   .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
   .btn-small { background: #f1f5f9; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: background 0.2s; }
-  .btn-small:hover { background: #e2e8f0; }
   .btn-send { background: #EAB308; color: black; font-weight: bold; border: none; padding: 14px; width: 100%; border-radius: 8px; font-size: 16px; cursor: pointer; }
   .btn-send:hover { background: #ca8a04; }
 </style>
@@ -35,31 +34,38 @@
     <button onclick="up(4250)" class="btn-small">👨‍👩‍👧‍👦 4+ Pers.</button>
   </div>
    
-  <button onclick="sub()" class="btn-send">Wert übernehmen</button>
+  <button id="sendBtn" onclick="sendToTypebot()" class="btn-send">Wert übernehmen</button>
 </div>
 
 <script>
-  // Aktualisiert die Anzeige beim Schieben oder Klicken
   function up(v) {
     document.getElementById('val').innerText = v;
     document.getElementById('rng').value = v;
   }
    
-  // Sendet den Wert an Typebot
-  function sub() {
-    var v = document.getElementById('rng').value;
+  function sendToTypebot() {
+    // 1. Feedback geben (Farbe ändern)
+    var btn = document.getElementById('sendBtn');
+    btn.innerText = "Sende...";
+    btn.style.backgroundColor = "#00ff00"; // Knallgrün
+
+    var v = document.getElementById('rng').value.toString();
     
-    // Konvertiert die Zahl sicherheitshalber in einen String
-    var valueToSend = v.toString();
+    // Debugging-Nachricht (Pop-up)
+    // Wenn das NICHT kommt, ist der Button kaputt.
+    // Wenn das kommt, aber Typebot nichts macht, liegt es an Typebot.
+    console.log("Versuche zu senden: " + v);
 
-    console.log("Sende an Typebot:", valueToSend);
-
-    // WICHTIG: Das ist der Standard-Weg, um aus einem iFrame an Typebot zu senden.
-    // Wir senden ein Objekt mit der Eigenschaft 'message'.
-    if (window.parent) {
-        window.parent.postMessage({ 
-            message: valueToSend 
-        }, "*");
+    // 2. Senden
+    try {
+        if (window.parent) {
+            window.parent.postMessage({ message: v }, "*");
+            console.log("Gesendet via window.parent");
+        }
+    } catch(e) {
+        btn.innerText = "Fehler!";
+        btn.style.backgroundColor = "red";
+        alert("Fehler: " + e.message);
     }
   }
 </script>
