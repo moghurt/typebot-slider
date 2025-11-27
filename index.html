@@ -25,33 +25,41 @@
   <div class="big-number">
     <span id="val">2500</span> <span class="unit">kWh</span>
   </div>
-  
+   
   <input type="range" id="rng" min="500" max="8000" step="100" value="2500" oninput="up(this.value)">
-  
+   
   <div class="buttons">
     <button onclick="up(1500)" class="btn-small">👤 1 Person</button>
     <button onclick="up(2500)" class="btn-small">👥 2 Pers.</button>
     <button onclick="up(3500)" class="btn-small">👨‍👩‍👧 3 Pers.</button>
     <button onclick="up(4250)" class="btn-small">👨‍👩‍👧‍👦 4+ Pers.</button>
   </div>
-  
+   
   <button onclick="sub()" class="btn-send">Wert übernehmen</button>
 </div>
 
 <script>
+  // Aktualisiert die Anzeige beim Schieben oder Klicken
   function up(v) {
     document.getElementById('val').innerText = v;
     document.getElementById('rng').value = v;
   }
-  
+   
+  // Sendet den Wert an Typebot
   function sub() {
     var v = document.getElementById('rng').value;
-    if (window.Typebot) {
-      window.Typebot.send(v);
-    } else {
-      // Fallback für Iframe Kommunikation
-      try { window.parent.postMessage(v, "*"); } catch(e) {}
-      console.log("Gesendet: " + v);
+    
+    // Konvertiert die Zahl sicherheitshalber in einen String
+    var valueToSend = v.toString();
+
+    console.log("Sende an Typebot:", valueToSend);
+
+    // WICHTIG: Das ist der Standard-Weg, um aus einem iFrame an Typebot zu senden.
+    // Wir senden ein Objekt mit der Eigenschaft 'message'.
+    if (window.parent) {
+        window.parent.postMessage({ 
+            message: valueToSend 
+        }, "*");
     }
   }
 </script>
