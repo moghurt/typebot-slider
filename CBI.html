@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StromSpar Werk - Ihr Tarif-Assistent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        .fade-in { animation: fadeIn 1s ease-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans">
+
+    <nav class="bg-white shadow-sm fixed w-full z-10 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="zap" class="text-yellow-500 w-8 h-8 fill-current"></i>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">StromSpar Werk</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-500 hover:text-yellow-600 transition">Stromtarife</a>
+                    <a href="#" class="text-gray-500 hover:text-yellow-600 transition">Ökostrom</a>
+                    <a href="#" class="text-gray-500 hover:text-yellow-600 transition">So funktioniert's</a>
+                </div>
+                <button onclick="window.openTypebot()" class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 transition shadow-md font-medium">
+                    Kundenlogin
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="text-center fade-in">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 mb-6">
+                Schluss mit zu hohen <br>
+                <span class="text-yellow-500">Stromrechnungen</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
+                Unser intelligenter Assistent analysiert Ihren Verbrauch und findet in Sekunden den günstigsten Tarif für Sie. Starten Sie jetzt den Vergleich – einfach und kostenlos.
+            </p>
+            
+            <div class="mt-10 flex justify-center gap-4">
+                <button onclick="window.openTypebot()" class="flex items-center gap-2 px-8 py-4 border border-transparent text-lg font-medium rounded-md text-slate-900 bg-yellow-400 hover:bg-yellow-500 md:py-4 md:text-lg md:px-10 shadow-lg hover:shadow-xl transition-all">
+                    <i data-lucide="calculator"></i>
+                    Jetzt Tarif berechnen
+                </button>
+                <a href="#" class="flex items-center gap-2 px-8 py-4 border border-gray-300 text-lg font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10 shadow-sm transition">
+                    Mehr Infos
+                </a>
+            </div>
+        </div>
+
+        <div class="mt-24 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
+                    <i data-lucide="search" class="text-yellow-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Unabhängiger Vergleich</h3>
+                <p class="text-gray-600">Wir durchsuchen hunderte Anbieter, um genau den Tarif zu finden, der zu Ihrem Haushalt passt.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                    <i data-lucide="leaf" class="text-green-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Auch 100% Ökostrom</h3>
+                <p class="text-gray-600">Auf Wunsch filtern wir ausschließlich nachhaltige Tarife aus erneuerbaren Energien.</p>
+            </div>
+            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                    <i data-lucide="piggy-bank" class="text-blue-600"></i>
+                </div>
+                <h3 class="text-lg font-semibold mb-2">Garantierte Ersparnis</h3>
+                <p class="text-gray-600">Wechseln Sie direkt im Chat und sparen Sie durchschnittlich bis zu 300€ im Jahr.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t mt-12 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-gray-400">
+            <p>&copy; 2024 StromSpar Werk Demo. Running on Localhost.</p>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        
+        // Platzhalter, falls der Bot noch lädt (wird unten überschrieben)
+        window.openTypebot = function() {
+            console.log("Typebot lädt noch...");
+        };
+    </script>
+
+    <script type="module">
+        import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js@0/dist/web.js'
+
+        Typebot.initPopup({
+            typebot: "my-typebot-cpzhx9j",
+            apiHost: "https://bot.automation-werk.de",
+            // Optional: Theme anpassung damit der Bubble-Button auch Gelb ist
+            theme: {
+                button: {
+                    backgroundColor: "#EAB308", 
+                },
+            },
+        });
+
+        // WICHTIG: Überschreibt die globale Funktion, damit deine Buttons funktionieren
+        window.openTypebot = () => {
+            console.log("Öffne Bot...");
+            Typebot.open();
+        };
+    </script>
+
+</body>
+</html>
