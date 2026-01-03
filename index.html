@@ -13,6 +13,7 @@
   input[type=range] { width: 100%; margin-bottom: 20px; accent-color: #EAB308; cursor: pointer; }
   .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
   .btn-small { background: #f1f5f9; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: background 0.2s; }
+  .btn-small:hover { background: #e2e8f0; }
   .btn-send { background: #EAB308; color: black; font-weight: bold; border: none; padding: 14px; width: 100%; border-radius: 8px; font-size: 16px; cursor: pointer; }
   .btn-send:hover { background: #ca8a04; }
 </style>
@@ -24,17 +25,17 @@
   <div class="big-number">
     <span id="val">2500</span> <span class="unit">kWh</span>
   </div>
-   
+  
   <input type="range" id="rng" min="500" max="8000" step="100" value="2500" oninput="up(this.value)">
-   
+  
   <div class="buttons">
     <button onclick="up(1500)" class="btn-small">👤 1 Person</button>
     <button onclick="up(2500)" class="btn-small">👥 2 Pers.</button>
     <button onclick="up(3500)" class="btn-small">👨‍👩‍👧 3 Pers.</button>
     <button onclick="up(4250)" class="btn-small">👨‍👩‍👧‍👦 4+ Pers.</button>
   </div>
-   
-  <button id="sendBtn" onclick="sendToTypebot()" class="btn-send">Wert übernehmen</button>
+  
+  <button onclick="sub()" class="btn-send">Wert übernehmen</button>
 </div>
 
 <script>
@@ -42,30 +43,27 @@
     document.getElementById('val').innerText = v;
     document.getElementById('rng').value = v;
   }
-   
-  function sendToTypebot() {
-    // 1. Feedback geben (Farbe ändern)
-    var btn = document.getElementById('sendBtn');
-    btn.innerText = "Sende...";
-    btn.style.backgroundColor = "#00ff00"; // Knallgrün
-
-    var v = document.getElementById('rng').value.toString();
+  
+  function sub() {
+    var v = document.getElementById('rng').value;
     
-    // Debugging-Nachricht (Pop-up)
-    // Wenn das NICHT kommt, ist der Button kaputt.
-    // Wenn das kommt, aber Typebot nichts macht, liegt es an Typebot.
-    console.log("Versuche zu senden: " + v);
+    // Wir senden ein Objekt mit dem Typ 'sliderUpdate', damit Typebot weiß, was das ist
+    var message = {
+      type: 'sliderUpdate',
+      value: v
+    };
 
-    // 2. Senden
+    // Senden an das Elternfenster (Typebot)
     try {
-        if (window.parent) {
-            window.parent.postMessage({ message: v }, "*");
-            console.log("Gesendet via window.parent");
-        }
+      window.parent.postMessage(message, "*");
+      console.log("Gesendet an Typebot: " + v);
+      
+      // Button Feedback
+      var btn = document.querySelector('.btn-send');
+      btn.innerText = "✓ Gespeichert";
+      btn.style.background = "#22c55e";
     } catch(e) {
-        btn.innerText = "Fehler!";
-        btn.style.backgroundColor = "red";
-        alert("Fehler: " + e.message);
+      console.error("Fehler beim Senden:", e);
     }
   }
 </script>
