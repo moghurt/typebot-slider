@@ -14,7 +14,7 @@
   .buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 20px; }
   .btn-small { background: #f1f5f9; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-size: 13px; transition: background 0.2s; }
   .btn-small:hover { background: #e2e8f0; }
-  .btn-send { background: #EAB308; color: black; font-weight: bold; border: none; padding: 14px; width: 100%; border-radius: 8px; font-size: 16px; cursor: pointer; }
+  .btn-send { background: #EAB308; color: black; font-weight: bold; border: none; padding: 14px; width: 100%; border-radius: 8px; font-size: 16px; cursor: pointer; transition: all 0.3s; }
   .btn-send:hover { background: #ca8a04; }
 </style>
 </head>
@@ -33,6 +33,7 @@
     <button onclick="up(2500)" class="btn-small">👥 2 Pers.</button>
     <button onclick="up(3500)" class="btn-small">👨‍👩‍👧 3 Pers.</button>
     <button onclick="up(4250)" class="btn-small">👨‍👩‍👧‍👦 4+ Pers.</button>
+     <button onclick="up(4250)" class="btn-small">👨‍👩‍👧‍👦 4+ Pers.</button>
   </div>
   
   <button onclick="sub()" class="btn-send">Wert übernehmen</button>
@@ -47,21 +48,23 @@
   function sub() {
     var v = document.getElementById('rng').value;
     
-    // Wir senden ein Objekt mit dem Typ 'sliderUpdate', damit Typebot weiß, was das ist
+    // WICHTIG: Der Typ 'Kwh' muss exakt so heißen wie im Typebot-Feld "Name"
     var message = {
-      type: 'sliderUpdate',
+      type: 'Kwh', 
       value: v
     };
 
-    // Senden an das Elternfenster (Typebot)
     try {
+      // Senden der Nachricht an das übergeordnete Typebot-Fenster
       window.parent.postMessage(message, "*");
-      console.log("Gesendet an Typebot: " + v);
       
-      // Button Feedback
+      // Visuelles Feedback: Button wird grün
       var btn = document.querySelector('.btn-send');
-      btn.innerText = "✓ Gespeichert";
-      btn.style.background = "#22c55e";
+      btn.innerText = "✓ Übermittelt";
+      btn.style.background = "#22c55e"; 
+      btn.style.color = "white";
+      
+      console.log("Gesendet: " + v + " mit Event-Typ 'Kwh'");
     } catch(e) {
       console.error("Fehler beim Senden:", e);
     }
